@@ -31,7 +31,7 @@ public class MailUtils {
 		Authenticator auth = new Authenticator() {
 			public PasswordAuthentication getPasswordAuthentication() {
 				//设置发送人的帐号和密码
-				return new PasswordAuthentication("admin", "admin@store.com");
+				return new PasswordAuthentication("admin", "admin");
 			}
 		};
 

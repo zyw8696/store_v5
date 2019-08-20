@@ -111,11 +111,11 @@ font {
 
 	<div class="col-md-8" style="background:#fff;padding:40px 80px;margin:30px;border:7px solid #ccc;">
 		<font>会员注册</font>USER REGISTER
-		<form class="form-horizontal" style="margin-top:5px;" action="${pageContext.request.contextPath}/UserServlet?method=regist" method="post">
+		<form class="form-horizontal" style="margin-top:5px;" action="${pageContext.request.contextPath}/UserServlet?method=userRegist" method="post">
 			 <div class="form-group">
 			    <label for="username" class="col-sm-2 control-label">用户名</label>
 			    <div class="col-sm-6">
-			      <input type="text" name = “username" class="form-control" id="username" placeholder="请输入用户名">
+			      <input type="text" name = "username" class="form-control" id="username" placeholder="请输入用户名">
 			    </div>
 			  </div>
 			   <div class="form-group">
@@ -157,6 +157,13 @@ font {
 			    <label for="date" class="col-sm-2 control-label">出生日期</label>
 			    <div class="col-sm-6">
 			      <input type="date" name = "birthday" class="form-control"  >		      
+			    </div>
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="date" class="col-sm-2 control-label">电话</label>
+			    <div class="col-sm-6">
+			      <input type="text" name = "telephone" class="form-control"  >		      
 			    </div>
 			  </div>
 			  
