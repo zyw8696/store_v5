@@ -8,4 +8,8 @@ public interface UserDao {
 
 	void userRegist(User user) throws SQLException;
 
+	User userActive(String code) throws SQLException;
+
+	void userUpdata(User user) throws SQLException;
+
 }

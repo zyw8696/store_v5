@@ -15,5 +15,28 @@ public class UserServiceImp implements UserService{
 		UserDao.userRegist(user);
 	}
 
+	@Override
+	public boolean userActive(String code) throws SQLException {
+		UserDao UserDao = new UserDaoImp();
+		
+		//查找
+		User user = UserDao.userActive(code);//数据库查找该用户是否存在 select * from User where code = ? 返回的是一个user对象
+		
+		if(null!=user)
+		{//查找到 更改user的状态并置空code 
+			user.setCode(null);
+			user.setState(1);
+			UserDao.userUpdata(user);
+			return true;
+		}else
+		{
+			return false;
+		}
+		
+	}
+
+
+
+
 
 }

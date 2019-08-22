@@ -1,6 +1,7 @@
 package com.sean.store.web.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -50,16 +51,52 @@ public class UserServlet extends BaseServlet {
     		MailUtils.sendMail(user.getEmail(), user.getCode());
     	} catch (Exception e) {
 			// TODO: handle exception
-    		request.setAttribute("msg", "用户注册shibai");
+    		
+    		
+    		request.setAttribute("msg", "用户注失败");
         	
 		}
     	
     	//注册成功，向用户邮箱发送信息，跳转到提示页面
     	//失败，跳转到提示页面
-    	return "/jsp/info.jsp";
-    	
-    	
+    	return "/jsp/info.jsp";	
 	}
+    
+    
+    //用户激活(收到邮件后，通过点击邮件的链接地址，跳转到UserServlet的active方法[])
+    public String active(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+		String code = request.getParameter("code");
+		//通过code从数据库中查找用户是否存在,返回的是一个User对象,调用业务层执行代码 select * from User where code = ？
+		UserService userService = new UserServiceImp();//创建服务层对象
+		boolean flag = userService.userActive(code);//调用激活方法
+		
+		if(flag==true)
+		{	
+			request.setAttribute("msg", "注册成功");
+			return "/jsp/login.jsp";
+			
+		}
+		else
+		{
+			request.setAttribute("msg", "注册失败");
+			return "/jsp/info.jsp";	
+		}
+		
+    	
+		
+	}
+    
+    
+    
+    
+    
     
 
 }
+
+
+
+
+
+
+
