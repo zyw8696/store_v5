@@ -2,13 +2,10 @@ package com.sean.store.web.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,10 +22,23 @@ import com.sean.store.web.base.BaseServlet;
  */
 @WebServlet("/UserServlet")
 public class UserServlet extends BaseServlet {
-  
+  //页面经过servlet层跳转
     public String registUI(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		return "/jsp/register.jsp";
 	}
+    
+    public String loginUI(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return "/jsp/login.jsp";
+	}
+    
+    public String quit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	//用户退出分为两步：1 清楚session中的用户信息，2 重定向到当前页面
+    	request.getSession().invalidate();//清楚session区的信息
+    	
+    	response.sendRedirect("/store_v5_zywGH/jsp/index.jsp"); //重定向和转发只能做其中一个
+		return null;
+	}
+    
     //userRegist
     public String userRegist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//接收表达参数 (使用map接收表单中的键值对：username XXX， password xxx)
@@ -38,7 +48,7 @@ public class UserServlet extends BaseServlet {
     	User user = new User();
     	//myBeanUtils将map中的数据通过反射机制，填充到一个user对象中，同时解决String类型和Date类型的转化
     	MyBeanUtils.populate(user, map);
-    	user.setUid(UUIDUtils.getId());//UUIDUtils用于获取一个32位的随机数作为id
+    	user.setUid(UUIDUtils.getId());//UUIDUtils用于获取一个32位的随机数作为id 
     	user.setState(0);
     	user.setCode(UUIDUtils.getCode());
     	System.out.println(user);
@@ -82,16 +92,41 @@ public class UserServlet extends BaseServlet {
 			return "/jsp/info.jsp";	
 		}
 		
-    	
-		
 	}
-    
-    
-    
-    
-    
-    
+    //用户登录
+    public String userLogin(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	Map<String, String[]> map = request.getParameterMap();
+    	
+    	User user= new User();
+    	//myBeanUtils将map中的数据通过反射机制，填充到一个user对象中，同时解决String类型和Date类型的转化
+    	MyBeanUtils.populate(user, map);//user中存有username和password，其他为空，
+    	//1.用户名错误：可通过ajax在页面未提交时提醒用户
+    	//2.密码错误：通过查找数据库判断密码是否正确 select * from username=? and password=?  若查找到，且返回一个对象则表示正确
+    	//3.用户未激活：通过状态码判断 user.getStatus = 0 ? 用户未激活
+    	//调用业务层
+    	UserService US = new UserServiceImp();
+    	User user02 = US.userLogin(user);//是否返回一个已查找到的对象
+    	if(user02 != null && user02.getState()!=0)//查找到对象02 说明登录成功，顶层的登录注册链接需要变换为  个人信息 退出 购物车 等等  因此需要将用户02的信息存入session中
+    	{
+    		request.getSession().setAttribute("LoginUser", user02);
+        	//重定向
+        	response.sendRedirect("/store_v5_zywGH/index.jsp");//重定向要写全路径
+        	return null;
+    	}
+    	else if(user02 != null && user02.getState()==0) //登录失败 //登录失败还是回到登录页面，需要修改msg的描述信息：密码不正确或用户未激活
+    	{
+    		request.setAttribute("msg", "用户未激活");
+    		return "/jsp/login.jsp";
+    	}
+    	else 
+    	{	
+    		request.setAttribute("msg", "密码错误");
+    		return "/jsp/login.jsp";
+    	}
 
+    }
+    
+      
 }
 
 

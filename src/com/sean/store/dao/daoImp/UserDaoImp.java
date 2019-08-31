@@ -39,4 +39,12 @@ public class UserDaoImp implements UserDao{
 		
 	}
 
+	@Override
+	public User userLogin(User user) throws SQLException {
+		String sql = "select * from User where username=? and password=?";
+		QueryRunner qr = new QueryRunner(JDBCUtils.getDataSource());//获取数据库资源
+		//数据库查询操作查询对象信息，需要通过对象信息进行反射 创建一个对象并返回给查询
+		return qr.query(sql,new BeanHandler<User>(User.class),user.getUsername(),user.getPassword());
+	}
+
 }

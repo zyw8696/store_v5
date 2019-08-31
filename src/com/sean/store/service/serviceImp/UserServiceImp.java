@@ -35,8 +35,11 @@ public class UserServiceImp implements UserService{
 		
 	}
 
-
-
-
+	@Override
+	public User userLogin(User user) throws SQLException {
+		UserDao UD = new UserDaoImp();
+		User user02 = UD.userLogin(user);
+		return user02;
+	}
 
 }

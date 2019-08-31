@@ -15,25 +15,14 @@
 	</head>
 
 	<body>
-		<div class="container">
+		
 
-			<%--包含导航条 --%>
-			<%-- <%@include file="/jsp/header.jsp" %> --%>
+		<%@ include file="/jsp/header.jsp" %>
 
-			<div class="container">
-				<h1>${msg}</h1>
-				<div class="main_con">
-
-					
-					
-					</div>
-				</div>
-			</div>
-
-		</div>
+		
 		<%--页脚 --%>
-		<%-- <%@include file="footer.jsp" %> --%>
-
+		<%@include file="/jsp/footer.jsp" %>
+		
 	</body>
 
 </html>
