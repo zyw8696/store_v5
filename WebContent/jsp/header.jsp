@@ -51,10 +51,13 @@
 
 						<!-- Collect the nav links, forms, and other content for toggling -->
 						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-							<ul class="nav navbar-nav">
+							<ul class="nav navbar-nav" id="myUL">
+							<!-- 
 							<c:forEach items="${AllCategory }" var="c">
 								<li><a href="#">${c.cname}</a></li>
-							</c:forEach>
+							</c:forEach> 
+							-->
+							
 							</ul>
 							<form class="navbar-form navbar-right" role="search">
 								<div class="form-group">
@@ -70,5 +73,22 @@
 				</nav>
 			</div>
 			</body>
+		<script>
+		$(function(){//ajax方法
+			//向服务器CategoryServlet->getAllCats发起ajax请求
+			//将所有查询到的分类信息以JSON格式数据返回，并把分类信息数据绑定在页面的显示分类区域
+			var url = "/store_v5_zywGH/CategoryServlet";//请求服务器地址 (Servlet)
+			var obj = {"method":"findAllCats"}; //jsp中的对象由{}扩起 ，这里表示传入方法名
+			//ajax请求
+			$.post(url,obj,function(data){
+				
+				
+				$.each(data,function(i,obj){
+					var li="<li><a href='#'>"+obj.cname+"</a></li>";
+					$("#myUL").append(li);
+				})
+			},"json");
+		})
+		</script>
 
 </html>

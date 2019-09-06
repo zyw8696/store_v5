@@ -10,3 +10,4 @@ public interface CategoryService {
 	List<Category> getAllCategory() throws SQLException;
 
 }
+

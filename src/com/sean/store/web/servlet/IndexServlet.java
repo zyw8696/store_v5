@@ -6,9 +6,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sean.store.domain.Category;
-import com.sean.store.service.CategoryService;
-import com.sean.store.service.serviceImp.CategoryServiceImp;
+import com.sean.store.domain.Product;
+import com.sean.store.service.ProductService;
+import com.sean.store.service.serviceImp.ProductServiceImp;
 import com.sean.store.web.base.BaseServlet;
 
 /**
@@ -18,13 +18,16 @@ import com.sean.store.web.base.BaseServlet;
 public class IndexServlet extends BaseServlet {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		//Servlet调用业务层Service查询分类信息
 		
-		CategoryService CS = new CategoryServiceImp();
-		List<Category> list = CS.getAllCategory();//业务层中 调用查询方法getAll获取所有category类的分类信息并作为category类的集合返回，getAll方法的具体实现在Dao层
-		//将查询到的信息存放到request中 给下一个forword调用
+		//在页面加载的时候，先查询数据库中热门商品和最新商品信息，存放到request中后再跳转到真实的index.jsp首页中显示
+		//分页信息由header.jsp中进行查询
+		ProductService PS = new ProductServiceImp();
+		List<Product> list01 = PS.getHots();
+		List<Product> list02 = PS.getNews();
+
+		request.setAttribute("hots",list01);
+		request.setAttribute("news",list02);
 		
-		request.setAttribute("AllCategory", list);
 		
 		return "/jsp/index.jsp";
 	}

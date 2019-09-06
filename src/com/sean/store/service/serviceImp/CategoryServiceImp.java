@@ -12,7 +12,7 @@ public class CategoryServiceImp implements CategoryService {
 
 	@Override
 	public List<Category> getAllCategory() throws SQLException {
-		//业务层调用Dao层的方法具体实现
+		//业务层调用Dao层的方法具体实现 获取所有分类信息
 		CategoryDao CD = new CategoryDaoImp();
 		List<Category> list = CD.getAllCategory();
 		
