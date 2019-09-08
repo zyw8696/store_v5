@@ -81,10 +81,12 @@
 			var obj = {"method":"findAllCats"}; //jsp中的对象由{}扩起 ，这里表示传入方法名
 			//ajax请求
 			$.post(url,obj,function(data){
-				
+				//var li="<li><a href='/store_v5_zywGH/ProductServlet?method=findProductsByidWithPage&num=1&cid="+${obj.cid}+"'>"+obj.cname+"</a></li>";
+				//	$("#myUL").append(li);
 				
 				$.each(data,function(i,obj){
-					var li="<li><a href='#'>"+obj.cname+"</a></li>";
+					//向servlet传递3个参数：method num 分页的id
+					var li="<li><a href='/store_v5_zywGH/ProductServlet?method=findProductsByidWithPage&num=1&cid="+obj.cid+"'>"+obj.cname+"</a></li>";
 					$("#myUL").append(li);
 				})
 			},"json");

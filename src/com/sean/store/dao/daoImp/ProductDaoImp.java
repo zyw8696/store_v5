@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.sean.store.dao.ProductDao;
 import com.sean.store.domain.Product;
@@ -37,6 +38,23 @@ public class ProductDaoImp implements ProductDao {
 		return qr.query(sql, new BeanHandler<Product>(Product.class),pid);//查询得到商品的全部信息，通过反射创建一个对象返回
 		
 	}
+
+	@Override
+	public int findCount(String cid) throws Exception {
+		String sql = "select count(*) from product where cid = ?";
+		QueryRunner qr = new QueryRunner(JDBCUtils.getDataSource());
+		Long num = (Long) qr.query(sql, new ScalarHandler(),cid);//查询返回的是一个数字
+		return num.intValue();
+	}
+
+	@Override
+	public List findProductsByIdWithPage(String cid, int i, int j) throws Exception {
+		String sql="select * from product where cid=? limit ?,?";
+		QueryRunner qr = new QueryRunner(JDBCUtils.getDataSource());
+		return qr.query(sql, new BeanListHandler<Product>(Product.class),cid,i,j);
+	}
+
+
 
 }
  
